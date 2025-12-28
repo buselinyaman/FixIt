@@ -1,9 +1,10 @@
 ---------------------------------------------------
 TR
 ---------------------------------------------------
-🔧 FixIt - Smart Repair Management System
+🔧 FixIt - Smart Service Matching Platform
 
-FixIt, kullanıcıların arıza ve tamir taleplerini oluşturabildiği, teknisyenlerin bu talepleri yönetebildiği modern bir tamir yönetim sistemidir.
+FixIt, kullanıcıların tamir veya hizmet taleplerini oluşturup uygun ustaları seçebildiği bir hizmet eşleştirme web uygulamasıdır.
+Bu sistemde kullanıcılar ihtiyaçlarını belirtir, teknisyen veya ustalar talepleri kabul ederek işi tamamlar.
 ASP.NET Core Web API, Entity Framework Core ve JWT Authentication teknolojileriyle geliştirilmiştir.
 
 🚀 Özellikler
@@ -142,10 +143,11 @@ Buse Selin Yaman
 ---------------------------------------------------
 EN
 ---------------------------------------------------
-🔧 FixIt - Smart Repair Management System
+🔧 FixIt - Smart Service Matching Platform
 
-FixIt is a modern repair management system that allows users to submit repair requests and technicians to manage and complete them efficiently.
-Built using ASP.NET Core Web API, Entity Framework Core, and JWT Authentication technologies.
+FixIt is a modern web application that connects users with skilled technicians and service providers.
+Users can post service requests (e.g., repair, renovation, maintenance) and choose from available professionals.
+Built with ASP.NET Core Web API, Entity Framework Core, and JWT Authentication for secure and scalable service management.
 
 🚀 Features
 
