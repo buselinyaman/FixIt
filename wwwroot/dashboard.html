@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FixIt Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f6f8fa;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .accept {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .complete {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .status {
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-align: center;
+            width: 110px;
+        }
+
+        .pending {
+            background-color: #bdc3c7;
+            color: #2c3e50;
+        }
+
+        .accepted {
+            background-color: #f1c40f;
+            color: #2c3e50;
+        }
+
+        .completed {
+            background-color: #2ecc71;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>FixIt - Repair Requests Dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Cost</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="requestsTable">
+            <tr><td colspan="7">Loading...</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+        async function loadRequests() {
+            try {
+                const response = await fetch("/api/Requests");
+                const data = await response.json();
+
+                const table = document.getElementById("requestsTable");
+                table.innerHTML = "";
+
+                data.forEach(req => {
+                    const row = `
+                            <tr>
+                                <td>${req.id}</td>
+                                <td>${req.description}</td>
+                                <td>${req.customerName}</td>
+                                <td class="status ${statusClass(req.status)}">${statusText(req.status)}</td>
+                                <td>${req.cost ?? "-"}</td>
+                                <td>${new Date(req.createdAt).toLocaleString()}</td>
+                                <td>
+                                    ${req.status === 0 ? `<button class="accept" onclick="acceptRequest(${req.id})">Kabul Et</button>` : ''}
+                                    ${req.status === 1 ? `<button class="complete" onclick="completeRequest(${req.id})">Tamamla</button>` : ''}
+                                </td>
+                            </tr>`;
+                    table.innerHTML += row;
+                });
+            } catch (error) {
+                console.error("Error loading data:", error);
+            }
+        }
+
+        function statusText(status) {
+            switch (status) {
+                case 0: return "Pending";
+                case 1: return "Accepted";
+                case 2: return "Completed";
+                default: return "Unknown";
+            }
+        }
+
+        function statusClass(status) {
+            switch (status) {
+                case 0: return "pending";
+                case 1: return "accepted";
+                case 2: return "completed";
+                default: return "";
+            }
+        }
+
+        async function acceptRequest(id) {
+            if (!confirm(`Request #${id} kabul edilsin mi?`)) return;
+            const response = await fetch(`/api/Requests/accept/${id}`, { method: "POST" });
+            if (response.ok) {
+                alert("İstek kabul edildi!");
+                loadRequests();
+            } else {
+                alert("Bir hata oluştu!");
+            }
+        }
+
+
+        async function completeRequest(id) {
+            if (!confirm(`Request #${id} tamamlandı mı?`)) return;
+            const response = await fetch(`/api/Requests/complete/${id}`, { method: "POST" });
+            if (response.ok) {
+                alert("İstek tamamlandı!");
+                loadRequests();
+            } else {
+                alert("Bir hata oluştu!");
+            }
+        }
+
+
+        loadRequests();
+    </script>
+</body>
+</html>

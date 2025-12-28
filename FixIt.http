@@ -1,0 +1,18 @@
+﻿@FixIt_HostAddress = https://localhost:7072
+
+### 1️⃣ Tüm requestleri listele
+GET {{FixIt_HostAddress}}/api/Requests
+Accept: application/json
+
+### 2️⃣ Yeni request oluştur
+POST {{FixIt_HostAddress}}/api/Requests
+Content-Type: application/json
+
+{
+  "description": "Laptop ekranı kırıldı, tamir gerekiyor",
+  "customerName": "Selin",
+  "status": 0
+}
+
+### 3️⃣ Request kabul et
+POST {{FixIt_HostAddress}}/api/Requests/1/accept
